@@ -69,3 +69,11 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 # weather-forecast
 Obtains weather forecast from image metadata's location information
+
+### To start Frontend server
+$ npm start
+=> Port:3000
+
+### To start Backend server
+$ node server.js
+=> Port:3002
