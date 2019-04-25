@@ -36,8 +36,14 @@ app.post('/storeImage', (req, res, next) => {
             fstream.on('close', function () {
                   try {
                         new ExifImage({ image: `./geo-tagged-images/${filename}` }, function (error, exifData) {
-                              if (error)
+                              if (error) {
                                     console.log('Error: ' + error.message);
+                                    res.send({
+                                          code: 403,
+                                          message: `Your image information couldn't be extracted! Please try again later!`,
+                                          error
+                                    });
+                              } 
                               else {
                                     // console.log(exifData.gps['GPSLatitude'], exifData.gps['GPSLongitude']); // Do something with your data!
                                     let title = filename;
@@ -49,23 +55,32 @@ app.post('/storeImage', (req, res, next) => {
                                                 console.log("Error:", error);
                                                 res.send({
                                                       code: 403,
-                                                      message: error,
+                                                      message: `Your image wasn't stored properly! Please try again later!`,
+                                                      error
                                                 });
                                           } else {
-                                                console.log("Inserted successfully");
+                                                // console.log("Inserted successfully");
 
                                                 // get weather data
                                                 weather.setLang('en');
+                                                // weather.setCoordinate(lat, long);
                                                 weather.setCoordinate(18.895863, 72.976873);
                                                 weather.setAPPID('dcdb3235cec4cab9c8397d8dc254c81b');
                                                 weather.getAllWeather(function (err, JSONObj) {
-                                                      console.log(JSONObj);
+                                                      if (err) {
+                                                            res.send({
+                                                                  code: 200,
+                                                                  message: 'Oops! Sorry! Weather data not available! :(',
+                                                            });
+                                                      } else {
+                                                            res.send({
+                                                                  code: 200,
+                                                                  message: 'Weather data available',
+                                                                  data: JSONObj
+                                                            });
+                                                      }                                                      
                                                 });
-
-                                                res.send({
-                                                      code: 200,
-                                                      message: results.rows,
-                                                });
+                                                
                                           }
                                     });
                               }
