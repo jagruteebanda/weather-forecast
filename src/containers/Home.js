@@ -9,6 +9,8 @@ class Home extends Component {
             this.state = {
                   weatherData: null,
                   // imageFile: require('../images/jnpt.jpg')
+                  imageError: null,
+                  imageDetails: {}
             }
       }
 
@@ -27,29 +29,34 @@ class Home extends Component {
                                     encrypt="multipart/form-data"
                                     onSubmit={(e) => {
                                           e.preventDefault();
-                                          let formData = new FormData();
-                                          let imagefile = document.querySelector('#imageFile');
-                                          formData.append('file', imagefile.files[0]);
+                                          // let formData = new FormData();
+                                          // formData.append('lat', this.state.imageDetails.coordinates.lat);
+                                          // formData.append('long', this.state.imageDetails.coordinates.long);
+                                          // formData.append('filename', this.state.imageDetails.filename);
+
+                                          const data = {
+                                                lat: this.state.imageDetails.coordinates.lat, 
+                                                long: this.state.imageDetails.coordinates.long, 
+                                                filename: this.state.imageDetails.filename
+                                          }
 
                                           var request = new XMLHttpRequest();
-                                          request.open("POST", "http://localhost:3002/storeImage");
-                                          request.send(formData);
+                                          request.open("POST", "http://localhost:3002/getWeather");
+                                          request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                                          request.send(JSON.stringify(data));
                                           request.onload = () => {
                                                 console.log(JSON.parse(request.response));
                                                 let response = JSON.parse(request.response);
-                                                // const imageFile = require(response.data.filePath);
+
                                                 if (response.code === 200) {
                                                       this.setState({
-                                                            weatherData: { ...response.data },
-                                                            // imageFile
-                                                      }, () => {
-                                                            // console.log(this.state.weatherData);
+                                                            weatherData: { ...response.data }
                                                       });
                                                 } else {
                                                       this.setState({
                                                             weatherData: {
                                                                   message: "Weather data not available. Please try again later!"
-                                                            }
+                                                            },
                                                       })
                                                 }
 
@@ -64,9 +71,37 @@ class Home extends Component {
                                                 name="imageFile"
                                                 required
                                                 accept="image/png, image/jpeg"
+                                                onChange={(e) => {
+                                                      // console.log(e.target.files[0]);
+                                                      let formData = new FormData();
+                                                      formData.append('file', e.target.files[0]);
+
+                                                      var request = new XMLHttpRequest();
+                                                      request.open("POST", "http://localhost:3002/checkImage");
+                                                      request.send(formData);
+                                                      request.onload = () => {
+                                                            console.log(JSON.parse(request.response));
+                                                            let response = JSON.parse(request.response);
+
+                                                            if (response.code === 200) {
+                                                                  this.setState({
+                                                                        imageDetails: { ...response.data },
+                                                                        imageError: response.message
+                                                                  });
+                                                            } else {
+                                                                  this.setState({
+                                                                        imageError: `Something's not right! Please try again later!`
+                                                                  })
+                                                            }
+
+                                                      };
+                                                }}
                                           />
                                     </label>
-
+                                    {
+                                          (this.state.imageError) &&
+                                          <h4 style={{ color: 'red' }}>{this.state.imageError}</h4>
+                                    }
                                     <input className="submit-button" type="submit" />
                               </form>
                               {
