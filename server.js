@@ -45,10 +45,11 @@ app.post('/storeImage', (req, res, next) => {
                                     });
                               } 
                               else {
+                                    console.log(exifData.gps);
                                     // console.log(exifData.gps['GPSLatitude'], exifData.gps['GPSLongitude']); // Do something with your data!
                                     let title = filename;
-                                    let lat = exifData.gps['GPSLatitude'][0];
-                                    let long = exifData.gps['GPSLongitude'][0];
+                                    let lat = exifData.gps['GPSLatitude'][0] + (exifData.gps['GPSLatitude'][1]/60) + (exifData.gps['GPSLatitude'][1]/3600);
+                                    let long = exifData.gps['GPSLongitude'][0] + (exifData.gps['GPSLongitude'][1]/60) + (exifData.gps['GPSLongitude'][1]/3600);;
                                     let raster = 1234;
                                     pool.query(`INSERT INTO images (title, raster, lat, long) VALUES ('${title}', ${raster}, ${lat}, ${long})`, (error, results) => {
                                           if (error) {
@@ -63,16 +64,17 @@ app.post('/storeImage', (req, res, next) => {
 
                                                 // get weather data
                                                 weather.setLang('en');
-                                                // weather.setCoordinate(lat, long);
-                                                weather.setCoordinate(18.895863, 72.976873);
+                                                weather.setCoordinate(lat, long);
+                                                // weather.setCoordinate(18.895863, 72.976873);
                                                 weather.setAPPID('dcdb3235cec4cab9c8397d8dc254c81b');
                                                 weather.getAllWeather(function (err, JSONObj) {
                                                       if (err) {
                                                             res.send({
-                                                                  code: 200,
+                                                                  code: 403,
                                                                   message: 'Oops! Sorry! Weather data not available! :(',
                                                             });
                                                       } else {
+                                                            console.log(JSONObj);
                                                             res.send({
                                                                   code: 200,
                                                                   message: 'Weather data available',
