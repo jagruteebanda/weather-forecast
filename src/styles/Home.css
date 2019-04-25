@@ -1,0 +1,33 @@
+.header {
+      display: flex;
+      flex: 1;
+      /* flex-direction: row; */
+      align-items: center;
+      justify-content: center;
+      background-color: #000000;
+      color: #ffffff;
+      width: 100%;
+      height: 100px;
+}
+
+.header-title {
+      text-align: center;
+}
+
+.app-body {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+}
+
+.form {
+      display: flex;
+      flex-direction: column;
+}
+
+.form-input {
+      margin-top: 20px;
+      margin-bottom: 20px;
+}
