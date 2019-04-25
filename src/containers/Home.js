@@ -17,6 +17,7 @@ class Home extends Component {
             return (
                   <div className="app">
                         <div className="header">
+                              <img src={require("../images/weather.png")} width="80" height="80"></img>&nbsp;&nbsp;
                               <h1 className="header-title">Weather-Forecast</h1>
                         </div>
                         <div className="app-body">
@@ -34,7 +35,7 @@ class Home extends Component {
                                           request.open("POST", "http://localhost:3002/storeImage");
                                           request.send(formData);
                                           request.onload = () => {
-                                                // console.log(JSON.parse(request.response));
+                                                console.log(JSON.parse(request.response));
                                                 let response = JSON.parse(request.response);
                                                 // const imageFile = require(response.data.filePath);
                                                 if (response.code === 200) {
@@ -68,45 +69,46 @@ class Home extends Component {
 
                                     <input className="submit-button" type="submit" />
                               </form>
-                        </div>
-                        {
-                              (this.state.weatherData) &&
-                              <div className="weather-details">
-                                    <div className="weather-card">
-                                          <img id="weather-image"
-                                                src={require("../images/weather.png")} width="200px" height="200px"></img>
-                                          {/* <img id="weather-image" src={(this.state.weatherData) ? this.state.weatherData.filePath : null} width="100px" height="100px"></img> */}
-                                          <table>
-                                                <tbody>
-                                                      <tr>
-                                                            <td>Coordinates</td>
-                                                            <td>{`${this.state.weatherData.coord.lat} ${this.state.weatherData.coord.lon}`}</td>
-                                                      </tr>
-                                                      <tr>
-                                                            <td>Location</td>
-                                                            <td>{this.state.weatherData.name}</td>
-                                                      </tr>
-                                                      <tr>
-                                                            <td>Description</td>
-                                                            <td>{this.state.weatherData.weather[0].description}</td>
-                                                      </tr>
-                                                      <tr>
-                                                            <td>Temperature</td>
-                                                            <td>{this.state.weatherData.main.temp}</td>
-                                                      </tr>
-                                                      <tr>
-                                                            <td>Pressure</td>
-                                                            <td>{this.state.weatherData.main.pressure}</td>
-                                                      </tr>
-                                                      <tr>
-                                                            <td>Humidity</td>
-                                                            <td>{this.state.weatherData.main.humidity}</td>
-                                                      </tr>
-                                                </tbody>
-                                          </table>
+                              {
+                                    (this.state.weatherData) &&
+                                    <div className="weather-details">
+                                          <div className="weather-card">
+                                                <img id="weather-image"
+                                                      src={require("../images/weather.png")} width="200px" height="200px"></img>
+                                                {/* <img id="weather-image" src={(this.state.weatherData) ? this.state.weatherData.filePath : null} width="100px" height="100px"></img> */}
+                                                <table>
+                                                      <tbody>
+                                                            <tr>
+                                                                  <td><b>Coordinates</b></td>
+                                                                  <td>{`${this.state.weatherData.coord.lat} ${this.state.weatherData.coord.lon}`}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                  <td><b>Location</b></td>
+                                                                  <td>{this.state.weatherData.name}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                  <td><b>Description</b></td>
+                                                                  <td>{this.state.weatherData.weather[0].description}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                  <td><b>Temperature</b></td>
+                                                                  <td>{this.state.weatherData.main.temp}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                  <td><b>Pressure</b></td>
+                                                                  <td>{this.state.weatherData.main.pressure}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                  <td><b>Humidity</b></td>
+                                                                  <td>{this.state.weatherData.main.humidity}</td>
+                                                            </tr>
+                                                      </tbody>
+                                                </table>
+                                          </div>
                                     </div>
-                              </div>
-                        }
+                              }
+                        </div>
+
                   </div>
 
             );
