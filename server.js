@@ -39,42 +39,35 @@ app.post('/storeImage', (req, res, next) => {
                               if (error)
                                     console.log('Error: ' + error.message);
                               else {
-                                    console.log("Image File Data:\n", exifData);
-                                    res.send({
-                                          code: 200
-                                    });
                                     // console.log(exifData.gps['GPSLatitude'], exifData.gps['GPSLongitude']); // Do something with your data!
-                                    // let title = filename;
-                                    // let lat = exifData.gps['GPSLatitude'][0];
-                                    // let long = exifData.gps['GPSLongitude'][0];
-                                    // let raster = 1234;
-                                    // pool.query(`INSERT INTO images (title, raster, lat, long) VALUES ('${title}', ${raster}, ${lat}, ${long})`, (error, results) => {
-                                    //       if (error) {
-                                    //             console.log("Error:", error);
-                                    //             res.send({
-                                    //                   code: 403,
-                                    //                   message: error,
-                                    //             });
-                                    //       } else {
-                                    //             console.log("Inserted successfully");
-                                    //             // get weather data
-                                    //             // weather.setCoordinate(lat, long);
-                                    //             weather.setLang('en');
-                                    //             weather.setCoordinate(18.895863, 72.976873);
-                                    //             weather.setAPPID('dcdb3235cec4cab9c8397d8dc254c81b');
-                                    //             // weather.getDescription(function (err, desc) {
-                                    //             //       console.log(desc);
-                                    //             // });
-                                    //             weather.getAllWeather(function (err, JSONObj) {
-                                    //                   console.log(JSONObj);
-                                    //             });
+                                    let title = filename;
+                                    let lat = exifData.gps['GPSLatitude'][0];
+                                    let long = exifData.gps['GPSLongitude'][0];
+                                    let raster = 1234;
+                                    pool.query(`INSERT INTO images (title, raster, lat, long) VALUES ('${title}', ${raster}, ${lat}, ${long})`, (error, results) => {
+                                          if (error) {
+                                                console.log("Error:", error);
+                                                res.send({
+                                                      code: 403,
+                                                      message: error,
+                                                });
+                                          } else {
+                                                console.log("Inserted successfully");
 
-                                    //             res.send({
-                                    //                   code: 200,
-                                    //                   message: results.rows,
-                                    //             });
-                                    //       }
-                                    // });
+                                                // get weather data
+                                                weather.setLang('en');
+                                                weather.setCoordinate(18.895863, 72.976873);
+                                                weather.setAPPID('dcdb3235cec4cab9c8397d8dc254c81b');
+                                                weather.getAllWeather(function (err, JSONObj) {
+                                                      console.log(JSONObj);
+                                                });
+
+                                                res.send({
+                                                      code: 200,
+                                                      message: results.rows,
+                                                });
+                                          }
+                                    });
                               }
                         });
                   } catch (error) {
