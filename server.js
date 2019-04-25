@@ -31,11 +31,11 @@ app.post('/storeImage', (req, res, next) => {
       req.pipe(req.busboy);
       req.busboy.on('file', function (fieldname, file, filename) {
             console.log("Uploading: " + filename);
-            fstream = fs.createWriteStream(__dirname + '/geo-tagged-images/' + filename);
+            fstream = fs.createWriteStream(__dirname + '/src/images/' + filename);
             file.pipe(fstream);
             fstream.on('close', function () {
                   try {
-                        new ExifImage({ image: `./geo-tagged-images/${filename}` }, function (error, exifData) {
+                        new ExifImage({ image: `./src/images/${filename}` }, function (error, exifData) {
                               if (error) {
                                     console.log('Error: ' + error.message);
                                     res.send({
@@ -45,7 +45,6 @@ app.post('/storeImage', (req, res, next) => {
                                     });
                               } 
                               else {
-                                    console.log(exifData.gps);
                                     // console.log(exifData.gps['GPSLatitude'], exifData.gps['GPSLongitude']); // Do something with your data!
                                     let title = filename;
                                     let lat = exifData.gps['GPSLatitude'][0] + (exifData.gps['GPSLatitude'][1]/60) + (exifData.gps['GPSLatitude'][1]/3600);
@@ -74,6 +73,7 @@ app.post('/storeImage', (req, res, next) => {
                                                                   message: 'Oops! Sorry! Weather data not available! :(',
                                                             });
                                                       } else {
+                                                            JSONObj.filePath = `../images/${filename}`;
                                                             console.log(JSONObj);
                                                             res.send({
                                                                   code: 200,
@@ -95,3 +95,4 @@ app.post('/storeImage', (req, res, next) => {
 });
 
 app.listen(3002);
+console.log("Server started listening at port 3002...")

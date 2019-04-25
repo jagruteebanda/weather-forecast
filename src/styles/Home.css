@@ -4,7 +4,8 @@
       /* flex-direction: row; */
       align-items: center;
       justify-content: center;
-      background-color: #000000;
+      /* background-color: #333399; */
+      background-image: linear-gradient(#333399, #3333ff);
       color: #ffffff;
       width: 100%;
       height: 100px;
@@ -22,12 +23,68 @@
       justify-content: center;
 }
 
-.form {
+#image-form {
       display: flex;
       flex-direction: column;
 }
 
-.form-input {
-      margin-top: 20px;
-      margin-bottom: 20px;
+.file-input {
+      margin-top: 15px;
+      overflow: hidden;
+      position: relative;
+      background: #000000;
+      color: #ffffff;
+      border-radius: 5px;
+      float: left;
+      padding: .5em;
+      text-align: center;
+}
+
+.file-input [type=file] {
+      cursor: pointer;
+      display: block;
+      font-size: 999px;
+      width: 200px;
+      height: 50px;
+      opacity: 0;
+      position: absolute;
+      right: 0;
+      text-align: right;
+      top: 0;
+}
+
+.submit-button {
+      width: 200px;
+      height: 50px;
+      margin-top: 15px;
+      margin-bottom: 15px;
+      font-size: 18px;
+      background-color: #333399;
+      color: #ffffff;
+      border-radius: 5px;
+}
+
+.weather-details {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+}
+
+.weather-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      /* justify-content: center; */
+      width: 500px;
+      height: 500px;
+      background-color: #d4d3d3;
+      padding: 15px;
+}
+
+td {
+      height: 40px;
+      padding: 5px;
+      width: 200px;
+      text-align: center;
+      font-size: 18px;
 }
